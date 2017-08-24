@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+	
+      <title>Probability 101</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+      <meta name="author" content="Tabitha Bleil">
+	  
+      <link rel="stylesheet" href="css/styles.css" type="text/css">
+      <link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet">
+	  
+      <script src="https://use.fontawesome.com/3c440626f8.js"></script>
+      <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script> 
+      <script src="https://cdn.jsdelivr.net/jquery.typeit/4.4.0/typeit.min.js"></script>
+		
+   </head>
+  <body>
+    <div id="container">
+      <div id="box">
+        <div id="header"></div>
+	
+        <div id="text">I've generated a <this id="length"></this> character long string of numbers from 1 to 123, written in English.
+              <br>This website will determine the probability that a letter of 
+                  your choice will be selected from the string at random.</div> 
+	
+        <input placeholder="Input letter" id="letter" type="text" onkeydown="enter(this)"/>
+
+        <div id="result"></div>
+
+        <div id="contact">
+          <a href="https://tabithableil.github.io"><i class="fa fa-globe" aria-hidden="true"></i></a>
+          <a href="https://github.com/tabithableil"><i class="fa fa-github" aria-hidden="true"></i></a>
+          <a href="https://linkedin/u/tabithableil"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+          <br>Created By Tabitha Bleil
+        </div>
+      </div>
+    </div>
+  <script>
+	
+    $('#header').typeIt({
+        speed: 100,
+        startDelay: 500
+    })
+
+    .tiType("Probability 101")
+    .tiPause(1000)
+    .tiDelete(3)
+    .tiPause(500)
+    .tiType("onehundredone")
+	
+    var ones =  ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+	 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+    var tens = ['', '', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+    var numberString = "";
+    for (i = 1; i < 124; i++) {
+      numberString += convertNumberToString(i);
+    }
+	
+    document.getElementById("length").innerHTML = numberString.length;
+
+    function convertNumberToString(num){
+      if (num < 20){
+        return ones[num];
+      } else if (num < 100 ){
+        return tens[parseInt(num/10)] + ones[num%10];
+      } else if (num >= 100){
+        return "onehundred" + convertNumberToString(num%100);
+      }
+    }
+
+    function select(){
+      var letter = document.getElementById('letter').value.toLowerCase();
+      var output = "";
+	
+      if (isEmptyString(letter) || letter.length < 1){
+        output = "0%, input a letter.";
+      }else if (letter.length > 1){
+        output = "0%, individual letters only.";
+      }else if (parseInt(letter)%1 == 0 || !/[a-zA-Z]/.test(letter)){
+		  output = "0%, letters only."
+	  } else if (numberString.includes(letter) == false){
+        output= "0%, does not exist in string";
+      }else{
+        var reg = new RegExp(letter,"gi");
+        count = numberString.match(reg).length;
+        output = getProbability(count);
+	  }
+	document.getElementById('result').innerHTML = output;
+    }
+
+    function getProbability(count){
+      return (parseFloat(count)/numberString.length).toFixed(4) + "%";
+    }
+	
+    function enter(ele) {
+      if(event.keyCode == 13){
+        select();
+      }
+     }
+
+    function isEmptyString(text) {
+      return text.length > 0 && !/[^\s]/.test(text);
+    }
+
+    </script>
+  </body>
+</html> 
