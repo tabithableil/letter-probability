@@ -80,13 +80,13 @@
         output = "0%, individual letters only.";
       }else if (parseInt(letter)%1 == 0 || !/[a-zA-Z]/.test(letter)){
 		  output = "0%, letters only."
-	  } else if (numberString.includes(letter) == false){
+      } else if (numberString.includes(letter) == false){
         output= "0%, does not exist in string";
       }else{
         var reg = new RegExp(letter,"gi");
         count = numberString.match(reg).length;
         output = getProbability(count);
-	  }
+      }
 	document.getElementById('result').innerHTML = output;
     }
 
